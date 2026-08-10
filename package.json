@@ -1,0 +1,18 @@
+{
+  "name": "kos-cms",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Portal institucional e plataforma KOS do Conselho Municipal de Saúde de Chapada dos Guimarães - MT",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:cms": "npm run dev --workspace=apps/cms",
+    "dev:kos": "npm run dev --workspace=apps/kos",
+    "build:cms": "npm run build --workspace=apps/cms",
+    "build:kos": "npm run build --workspace=apps/kos",
+    "lint:cms": "npm run lint --workspace=apps/cms",
+    "lint:kos": "npm run lint --workspace=apps/kos"
+  }
+}
