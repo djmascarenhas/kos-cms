@@ -1,0 +1,33 @@
+services:
+  cms:
+    build:
+      context: .
+      dockerfile: apps/cms/Dockerfile
+    restart: unless-stopped
+    networks:
+      - web
+
+  kos:
+    build:
+      context: .
+      dockerfile: apps/kos/Dockerfile
+    restart: unless-stopped
+    networks:
+      - web
+
+  proxy:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on:
+      - cms
+      - kos
+    ports:
+      - "80:80"
+    volumes:
+      - ./infra/nginx/conf.d:/etc/nginx/conf.d:ro
+    networks:
+      - web
+
+networks:
+  web:
+    name: kos-cms-web
