@@ -1,0 +1,6 @@
+[Unit]
+Description=Renew KOS CMS TLS certificates
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh /opt/kos-cms/app/infra/scripts/renew-certificates.sh

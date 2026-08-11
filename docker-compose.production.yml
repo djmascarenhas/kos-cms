@@ -23,8 +23,11 @@ services:
       - kos
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./infra/nginx/conf.d:/etc/nginx/conf.d:ro
+      - /opt/kos-cms/letsencrypt:/etc/letsencrypt:ro
+      - /opt/kos-cms/certbot-www:/var/www/certbot:ro
     networks:
       - web
 
