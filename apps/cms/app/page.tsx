@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const cards = [
   { title: "9ª Conferência Municipal de Saúde", description: "Propostas, deliberações e acompanhamento." },
   { title: "PMS 2026–2029", description: "Plano Municipal de Saúde." },
@@ -12,7 +14,15 @@ export default function Home() {
     <main className="min-h-screen bg-slate-50 text-slate-900">
       <header className="bg-emerald-950 text-white">
         <div className="mx-auto max-w-7xl px-6 py-12">
-          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-300">Conselho Municipal de Saúde</p>
+          <Image
+            src="/cms-logo.jpeg"
+            alt="Logotipo do Conselho Municipal de Saúde de Chapada dos Guimarães"
+            width={112}
+            height={112}
+            priority
+            className="rounded-2xl bg-[#fffbed] p-2 shadow-lg"
+          />
+          <p className="mt-7 text-sm font-semibold uppercase tracking-[0.25em] text-emerald-300">Conselho Municipal de Saúde</p>
           <h1 className="mt-3 text-4xl font-bold md:text-5xl">Chapada dos Guimarães – MT</h1>
           <p className="mt-4 max-w-2xl text-lg text-emerald-100">Participação social, transparência e acompanhamento das políticas públicas de saúde.</p>
           <a href={process.env.NEXT_PUBLIC_KOS_URL ?? "https://kos.chapada.ia.br"} className="mt-8 inline-flex rounded-lg bg-amber-400 px-6 py-3 font-semibold text-slate-950 hover:bg-amber-300">Consultar o KOS</a>
@@ -29,7 +39,18 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <footer className="border-t bg-white"><div className="mx-auto max-w-7xl px-6 py-8 text-sm text-slate-500">Conselho Municipal de Saúde de Chapada dos Guimarães – MT</div></footer>
+      <footer className="border-t bg-white">
+        <div className="mx-auto flex max-w-7xl items-center gap-4 px-6 py-6 text-sm text-slate-500">
+          <Image
+            src="/cms-logo.jpeg"
+            alt="Logotipo do Conselho Municipal de Saúde"
+            width={64}
+            height={64}
+            className="rounded-lg"
+          />
+          <p>Conselho Municipal de Saúde de Chapada dos Guimarães – MT</p>
+        </div>
+      </footer>
     </main>
   );
 }
