@@ -1,0 +1,6 @@
+{
+  "name": "@kos/database",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Migrações e dados de referência do banco institucional do KOS CMS"
+}

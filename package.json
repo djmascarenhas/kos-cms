@@ -12,6 +12,10 @@
     "dev:kos": "npm run dev --workspace=apps/kos",
     "build:cms": "npm run build --workspace=apps/cms",
     "build:kos": "npm run build --workspace=apps/kos",
+    "db:apply": "psql %DATABASE_URL% -f packages/database/migrations/0001_initial_schema.sql",
+    "db:seed": "psql %DATABASE_URL% -f packages/database/seeds/0001_reference_data.sql",
+    "db:apply": "psql %DATABASE_URL% -f packages/database/migrations/0001_initial_schema.sql",
+    "db:seed": "psql %DATABASE_URL% -f packages/database/seeds/0001_reference_data.sql",
     "lint:cms": "npm run lint --workspace=apps/cms",
     "lint:kos": "npm run lint --workspace=apps/kos"
   }
