@@ -15,7 +15,7 @@ export default function Home() {
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-300">Conselho Municipal de Saúde</p>
           <h1 className="mt-3 text-4xl font-bold md:text-5xl">Chapada dos Guimarães – MT</h1>
           <p className="mt-4 max-w-2xl text-lg text-emerald-100">Participação social, transparência e acompanhamento das políticas públicas de saúde.</p>
-          <a href="http://localhost:3001" className="mt-8 inline-flex rounded-lg bg-amber-400 px-6 py-3 font-semibold text-slate-950 hover:bg-amber-300">Consultar o KOS</a>
+          <a href={process.env.NEXT_PUBLIC_KOS_URL ?? "https://kos.chapada.ia.br"} className="mt-8 inline-flex rounded-lg bg-amber-400 px-6 py-3 font-semibold text-slate-950 hover:bg-amber-300">Consultar o KOS</a>
         </div>
       </header>
       <section className="mx-auto max-w-7xl px-6 py-12">
