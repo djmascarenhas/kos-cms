@@ -61,7 +61,7 @@ CREATE TABLE conference_axes (
   ordinal smallint NOT NULL CHECK (ordinal > 0),
   title text NOT NULL,
   description text,
-  UNIQUE (conference_id, ordinal)
+  UNIQUE (conference_id, axis_id, ordinal)
 );
 
 CREATE TABLE conference_proposals (

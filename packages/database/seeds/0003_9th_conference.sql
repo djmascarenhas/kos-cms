@@ -99,8 +99,7 @@ SELECT
 FROM proposals
 CROSS JOIN conference
 JOIN conference_axes axes ON axes.conference_id = conference.id AND axes.ordinal = proposals.axis_ordinal
-ON CONFLICT (conference_id, ordinal) DO UPDATE SET
-  axis_id = EXCLUDED.axis_id,
+ON CONFLICT (conference_id, axis_id, ordinal) DO UPDATE SET
   title = EXCLUDED.title,
   proposal_text = EXCLUDED.proposal_text,
   responsible_sphere = EXCLUDED.responsible_sphere,
