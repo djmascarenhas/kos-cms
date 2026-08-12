@@ -1,0 +1,16 @@
+import Link from "next/link";
+import { searchInstitutionalBase } from "../../lib/consultation";
+
+export const dynamic = "force-dynamic";
+
+const label: Record<string, string> = { identified: "Identificada", partial: "Parcial", not_identified: "Nao localizada" };
+
+export default async function ConsultationPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  const { q = "" } = await searchParams;
+  let results = [];
+  let unavailable = false;
+  if (q.trim()) {
+    try { results = await searchInstitutionalBase(q); } catch { unavailable = true; }
+  }
+  return <main className="min-h-screen bg-[#07111f] text-white"><header className="border-b border-slate-700"><div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4"><Link href="/" className="font-bold tracking-[.14em]">KOS</Link><a href="https://cms.chapada.ia.br" className="text-sm font-semibold text-slate-300 hover:text-white">Portal CMS</a></div></header><section className="mx-auto max-w-4xl px-6 py-14"><p className="text-sm font-bold uppercase tracking-[.25em] text-amber-400">Consulta institucional</p><h1 className="mt-4 text-4xl font-bold">Pergunte ao KOS</h1><p className="mt-4 max-w-2xl leading-7 text-slate-300">Consulte as propostas da 9a Conferencia e suas referencias no PMS 2026-2029 e na PAS 2026.</p><form className="mt-8 flex flex-col gap-3 sm:flex-row"><label className="sr-only" htmlFor="q">Termo de consulta</label><input id="q" name="q" defaultValue={q} placeholder="Ex.: laboratorio, UBS, medicamentos ou Melhor em Casa" className="min-w-0 flex-1 rounded-xl border border-slate-700 bg-slate-900 px-5 py-3 text-white outline-none placeholder:text-slate-500 focus:border-amber-400" /><button className="rounded-xl bg-amber-400 px-6 py-3 font-bold text-slate-950 hover:bg-amber-300">Consultar</button></form>{q ? <section className="mt-10"><p className="text-sm font-bold text-slate-300">Resultados para “{q}”</p>{unavailable ? <p className="mt-4 rounded-xl bg-red-950/60 p-4 text-red-100">A base esta temporariamente indisponivel. Tente novamente em instantes.</p> : null}{!unavailable && results.length === 0 ? <p className="mt-4 rounded-xl border border-slate-700 bg-slate-900 p-5 text-slate-300">Nenhuma proposta correspondente foi encontrada. Tente termos mais curtos ou consulte a pagina da Conferencia.</p> : null}<div className="mt-4 grid gap-4">{results.map((item) => <article key={item.title} className="rounded-2xl border border-slate-700 bg-slate-900 p-6"><h2 className="text-xl font-bold text-amber-300">{item.title}</h2><p className="mt-3 leading-7 text-slate-300">{item.proposalText}</p><div className="mt-5 grid gap-3 text-sm sm:grid-cols-2"><p className="rounded-xl bg-slate-800 p-3"><strong className="block text-white">PMS: {item.pmsStatus ? label[item.pmsStatus] : "Sem registro"}</strong><span className="mt-1 block text-slate-400">{item.pmsReference ?? ""}</span></p><p className="rounded-xl bg-slate-800 p-3"><strong className="block text-white">PAS: {item.pasStatus ? label[item.pasStatus] : "Sem registro"}</strong><span className="mt-1 block text-slate-400">{item.pasReference ?? ""}</span></p></div></article>)}</div></section> : null}<p className="mt-10 text-sm leading-6 text-slate-400">Os resultados apoiam a consulta documental; nao substituem deliberacao do Conselho ou parecer tecnico.</p></section></main>;
+}

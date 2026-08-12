@@ -5,6 +5,7 @@ const cards = [
   { title: "9ª Conferência", description: "20 propostas aprovadas e rastreabilidade com PMS e PAS.", href: "/conferencia", icon: "01" },
   { title: "PMS 2026–2029", description: "Planejamento municipal para os próximos quatro anos.", href: "/conferencia", icon: "02" },
   { title: "PAS 2026", description: "Ações e metas anuais em acompanhamento.", href: "/conferencia", icon: "03" },
+  { title: "Área administrativa", description: "Acesso protegido para gestão de conteúdos do portal.", href: "/admin", icon: "04" },
 ];
 
 export default function Home() {

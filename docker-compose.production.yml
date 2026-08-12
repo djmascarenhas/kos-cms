@@ -14,8 +14,11 @@ services:
       context: .
       dockerfile: apps/kos/Dockerfile
     restart: unless-stopped
+    env_file:
+      - .env
     networks:
       - web
+      - internal
 
   proxy:
     image: nginx:1.27-alpine
@@ -36,3 +39,6 @@ services:
 networks:
   web:
     name: kos-cms-web
+  internal:
+    external: true
+    name: kos-cms-internal
