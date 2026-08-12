@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    volumes:
+      - /opt/kos-cms/documents:/opt/kos-cms/documents
     networks:
       - web
       - internal

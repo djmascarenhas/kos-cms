@@ -13,3 +13,15 @@ body { margin: 0; background: var(--background); color: var(--foreground); font-
   background-image: linear-gradient(rgba(22, 101, 52, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(22, 101, 52, .06) 1px, transparent 1px);
   background-size: 32px 32px;
 }
+
+.input {
+  border: 1px solid #b9cfdd;
+  border-radius: .75rem;
+  padding: .75rem 1rem;
+  background: white;
+  color: #40566a;
+  font-weight: 400;
+  outline: none;
+}
+
+.input:focus { border-color: #315f7d; box-shadow: 0 0 0 2px #dcecf5; }
