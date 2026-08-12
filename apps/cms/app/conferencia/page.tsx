@@ -34,6 +34,14 @@ const badgeStyle: Record<Status, string> = {
 
 function Badge({ status }: { status: Status }) { return <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${badgeStyle[status]}`}>{status}</span>; }
 
+const axisOrdinals: Record<string, number> = { "Eixo I": 1, "Eixo II": 2, "Eixo III": 3, "Eixo IV": 4 };
+
+function proposalHref(proposal: { axis: string; title: string }) {
+  const axisOrdinal = axisOrdinals[proposal.axis];
+  const proposalOrdinal = proposals.filter((item) => item.axis === proposal.axis).findIndex((item) => item.title === proposal.title) + 1;
+  return `/propostas/eixo-${axisOrdinal}-proposta-${proposalOrdinal}`;
+}
+
 // Legacy layout retained temporarily as a reference during the visual transition.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function LegacyConferencePage() {
@@ -70,7 +78,7 @@ export default function ConferencePage() {
       <section className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid gap-4 sm:grid-cols-3"><Metric value="20" label="propostas aprovadas" /><Metric value="2" label="vinculos identificados" /><Metric value="40" label="analises PMS e PAS" /></div>
         <div className="mt-8 rounded-2xl border border-[#c9ddea] bg-[#e8f2f8] p-5 text-sm leading-6 text-[#40566a]"><strong className="text-[#234c68]">Como ler:</strong> cada status mostra o nivel de previsao encontrado nos documentos. A cor apoia a leitura, mas o rotulo textual e sempre exibido.</div>
-        <div className="mt-10 space-y-9">{["Eixo I", "Eixo II", "Eixo III", "Eixo IV"].map((axis) => <section key={axis}><div className="mb-3 flex items-center gap-3"><span className="grid h-8 w-8 place-items-center rounded-full bg-[#dcecf5] text-sm font-bold text-[#1f5872]">{axis.slice(-1)}</span><h2 className="text-xl font-bold text-[#1f5872]">{axis}</h2></div><div className="overflow-x-auto rounded-2xl border border-[#d5e3ec] bg-white shadow-[0_8px_24px_rgba(31,88,114,.06)]"><table className="min-w-[620px] w-full text-left text-sm"><thead className="bg-[#e8f2f8] text-[#36566c]"><tr><th className="p-4">Proposta aprovada</th><th className="p-4">PMS</th><th className="p-4">PAS</th></tr></thead><tbody>{proposals.filter((proposal) => proposal.axis === axis).map((proposal) => <tr key={proposal.title} className="border-t border-[#e2ebf1]"><td className="p-4 font-semibold text-[#29465b]">{proposal.title}</td><td className="p-4"><Badge status={proposal.pms} /></td><td className="p-4"><Badge status={proposal.pas} /></td></tr>)}</tbody></table></div></section>)}</div>
+        <div className="mt-10 space-y-9">{["Eixo I", "Eixo II", "Eixo III", "Eixo IV"].map((axis) => <section key={axis}><div className="mb-3 flex items-center gap-3"><span className="grid h-8 w-8 place-items-center rounded-full bg-[#dcecf5] text-sm font-bold text-[#1f5872]">{axis.slice(-1)}</span><h2 className="text-xl font-bold text-[#1f5872]">{axis}</h2></div><div className="overflow-x-auto rounded-2xl border border-[#d5e3ec] bg-white shadow-[0_8px_24px_rgba(31,88,114,.06)]"><table className="min-w-[620px] w-full text-left text-sm"><thead className="bg-[#e8f2f8] text-[#36566c]"><tr><th className="p-4">Proposta aprovada</th><th className="p-4">PMS</th><th className="p-4">PAS</th></tr></thead><tbody>{proposals.filter((proposal) => proposal.axis === axis).map((proposal) => <tr key={proposal.title} className="border-t border-[#e2ebf1]"><td className="p-4 font-semibold text-[#29465b]"><Link href={proposalHref(proposal)} className="hover:text-[#28738c] hover:underline">{proposal.title}</Link></td><td className="p-4"><Badge status={proposal.pms} /></td><td className="p-4"><Badge status={proposal.pas} /></td></tr>)}</tbody></table></div></section>)}</div>
         <div className="mt-10 rounded-2xl border border-[#d5e3ec] bg-white p-6 shadow-[0_8px_24px_rgba(31,88,114,.06)]"><p className="font-bold text-[#17375e]">Base para acompanhamento</p><p className="mt-2 max-w-4xl text-sm leading-6 text-[#40566a]">A analise completa, com justificativa e referencia de pagina para cada vinculo, esta preservada na base institucional do KOS. O Conselho pode solicitar manifestacao tecnica, responsavel, prazo e fonte de financiamento para cada proposta.</p><a href="https://kos.chapada.ia.br" className="mt-4 inline-flex font-bold text-[#28738c] hover:text-[#1f5872]">Abrir o KOS para consulta -&gt;</a></div>
       </section>
       <Footer />
