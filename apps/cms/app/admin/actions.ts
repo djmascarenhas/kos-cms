@@ -27,7 +27,7 @@ function credentialsMatch(value: string, expected: string) {
   return received.length === configured.length && timingSafeEqual(received, configured);
 }
 
-async function readSession(): Promise<Session | null> {
+export async function getAdminSession(): Promise<Session | null> {
   const { secret } = config();
   const value = (await cookies()).get(SESSION_COOKIE)?.value;
   if (!secret || !value) return null;
@@ -47,7 +47,7 @@ async function readSession(): Promise<Session | null> {
 }
 
 export async function requireAdmin() {
-  const session = await readSession();
+  const session = await getAdminSession();
   if (!session) redirect("/admin/login");
   return session;
 }

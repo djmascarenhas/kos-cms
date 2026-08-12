@@ -24,12 +24,21 @@ export type ProposalDetail = {
   pasReference: string | null;
 };
 
+export type ProposalSummary = Pick<ProposalDetail, "axisOrdinal" | "proposalOrdinal" | "title" | "monitoringStatus" | "responsibleName" | "progressPercent" | "updatedAt">;
+
 let pool: Pool | undefined;
+let adminPool: Pool | undefined;
 
 function database() {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not configured");
   pool ??= new Pool({ connectionString: process.env.DATABASE_URL, max: 2, idleTimeoutMillis: 10_000 });
   return pool;
+}
+
+function adminDatabase() {
+  if (!process.env.ADMIN_DATABASE_URL) throw new Error("ADMIN_DATABASE_URL is not configured");
+  adminPool ??= new Pool({ connectionString: process.env.ADMIN_DATABASE_URL, max: 2, idleTimeoutMillis: 10_000 });
+  return adminPool;
 }
 
 export function proposalSlug(axisOrdinal: number, proposalOrdinal: number) {
@@ -67,4 +76,68 @@ export async function getProposalBySlug(slug: string): Promise<ProposalDetail | 
     [Number(match[1]), Number(match[2])],
   );
   return result.rows[0] ?? null;
+}
+
+export async function listProposalMonitoring(): Promise<ProposalSummary[]> {
+  const result = await database().query<ProposalSummary>(
+    `SELECT axis.ordinal::int AS "axisOrdinal", proposal.ordinal::int AS "proposalOrdinal",
+      proposal.title, COALESCE(monitoring.status::text, 'awaiting_information') AS "monitoringStatus",
+      monitoring.responsible_name AS "responsibleName",
+      COALESCE(monitoring.progress_percent, 0)::int AS "progressPercent",
+      monitoring.updated_at::text AS "updatedAt"
+     FROM conference_proposals proposal
+     JOIN conference_axes axis ON axis.id = proposal.axis_id
+     JOIN conferences conference ON conference.id = proposal.conference_id
+     LEFT JOIN proposal_monitoring monitoring ON monitoring.proposal_id = proposal.id
+     WHERE conference.edition = 9
+     ORDER BY axis.ordinal, proposal.ordinal`,
+  );
+  return result.rows;
+}
+
+export type MonitoringUpdate = {
+  status: ProposalDetail["monitoringStatus"];
+  responsibleName: string | null;
+  expectedCompletion: string | null;
+  progressPercent: number;
+  publicNotes: string | null;
+  updatedBy: string;
+};
+
+export async function updateProposalMonitoring(slug: string, update: MonitoringUpdate) {
+  const match = /^eixo-(\d+)-proposta-(\d+)$/.exec(slug);
+  if (!match) throw new Error("Invalid proposal slug");
+  const connection = await adminDatabase().connect();
+  try {
+    await connection.query("BEGIN");
+    const proposal = await connection.query<{ id: string }>(
+      `SELECT proposal.id FROM conference_proposals proposal
+       JOIN conference_axes axis ON axis.id = proposal.axis_id
+       JOIN conferences conference ON conference.id = proposal.conference_id
+       WHERE conference.edition = 9 AND axis.ordinal = $1 AND proposal.ordinal = $2 LIMIT 1`,
+      [Number(match[1]), Number(match[2])],
+    );
+    const proposalId = proposal.rows[0]?.id;
+    if (!proposalId) throw new Error("Proposal not found");
+    await connection.query(
+      `INSERT INTO proposal_monitoring (proposal_id, status, responsible_name, expected_completion, progress_percent, public_notes, updated_at, updated_by)
+       VALUES ($1, $2, $3, $4, $5, $6, now(), $7)
+       ON CONFLICT (proposal_id) DO UPDATE SET status = EXCLUDED.status,
+         responsible_name = EXCLUDED.responsible_name, expected_completion = EXCLUDED.expected_completion,
+         progress_percent = EXCLUDED.progress_percent, public_notes = EXCLUDED.public_notes,
+         updated_at = now(), updated_by = EXCLUDED.updated_by`,
+      [proposalId, update.status, update.responsibleName, update.expectedCompletion, update.progressPercent, update.publicNotes, update.updatedBy],
+    );
+    await connection.query(
+      `INSERT INTO audit_logs (entity_type, entity_id, action, details)
+       VALUES ('conference_proposal', $1, 'monitoring_updated', $2::jsonb)`,
+      [proposalId, JSON.stringify({ status: update.status, responsibleName: update.responsibleName, expectedCompletion: update.expectedCompletion, progressPercent: update.progressPercent, updatedBy: update.updatedBy })],
+    );
+    await connection.query("COMMIT");
+  } catch (error) {
+    await connection.query("ROLLBACK");
+    throw error;
+  } finally {
+    connection.release();
+  }
 }
