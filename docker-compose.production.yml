@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: apps/cms/Dockerfile
     restart: unless-stopped
+    env_file:
+      - .env
     networks:
       - web
 
