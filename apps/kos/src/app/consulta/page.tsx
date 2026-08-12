@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { searchInstitutionalBase } from "../../lib/consultation";
+import { searchInstitutionalBase, type ConsultationResult } from "../../lib/consultation";
 
 export const dynamic = "force-dynamic";
 
@@ -7,7 +7,7 @@ const label: Record<string, string> = { identified: "Identificada", partial: "Pa
 
 export default async function ConsultationPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const { q = "" } = await searchParams;
-  let results = [];
+  let results: ConsultationResult[] = [];
   let unavailable = false;
   if (q.trim()) {
     try { results = await searchInstitutionalBase(q); } catch { unavailable = true; }
