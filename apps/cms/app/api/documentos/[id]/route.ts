@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { getDownloadableDocument } from "../../../../lib/documents";
 
 export const runtime = "nodejs";
-const storageDirectory = path.resolve(process.env.DOCUMENT_STORAGE_PATH ?? "/opt/kos-cms/documents");
+const storageDirectory = path.resolve(/* turbopackIgnore: true */ process.env.DOCUMENT_STORAGE_PATH ?? "/opt/kos-cms/documents");
 
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
