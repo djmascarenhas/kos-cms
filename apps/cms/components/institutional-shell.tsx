@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ThemeToggle } from "./site-utilities";
 
 const navigation = [
   { href: "/documentos", label: "Documentos" },
@@ -17,9 +18,11 @@ export function PublicHeader() {
       <Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Página inicial do Conselho Municipal de Saúde">
         <Image src="/cms-logo.jpeg" alt="" width={52} height={52} priority className="h-13 w-13 shrink-0 rounded-xl bg-[#fffbed] object-cover p-0.5" />
         <span className="min-w-0"><strong className="block text-sm text-[#17375e] sm:text-base">Conselho Municipal de Saúde</strong><span className="block truncate text-xs text-[#60758a] sm:text-sm">Chapada dos Guimarães – MT</span></span>
+        <span className="hidden h-12 w-px shrink-0 bg-[#cbdce8] sm:block" aria-hidden="true" />
+        <span className="hidden h-12 w-[180px] overflow-hidden rounded-lg sm:block xl:w-[220px]"><Image src="/secretaria-saude-colorida.png" alt="Secretaria Municipal de Saúde de Chapada dos Guimarães" width={220} height={79} priority className="h-full w-full scale-[1.18] object-cover" /></span>
       </Link>
-      <nav aria-label="Navegação principal" className="hidden items-center gap-1 lg:flex">{navigation.map((item) => <Link key={item.href} href={item.href} className="rounded-lg px-3 py-2 text-sm font-semibold text-[#315f7d] hover:bg-[#eaf3f8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#315f7d]">{item.label}</Link>)}<a href={whatsappUrl} target="_blank" rel="noreferrer" className="ml-2 rounded-full bg-[#087f5b] px-4 py-2 text-sm font-bold text-white hover:bg-[#066b4d]">WhatsApp</a></nav>
-      <details className="relative lg:hidden"><summary className="cursor-pointer list-none rounded-xl border border-[#9db9ca] px-4 py-2 text-sm font-bold text-[#315f7d]">Menu</summary><nav aria-label="Navegação para celular" className="absolute right-0 z-40 mt-3 grid w-64 gap-1 rounded-2xl border border-[#d5e3ec] bg-white p-3 shadow-xl">{navigation.map((item) => <Link key={item.href} href={item.href} className="rounded-lg px-3 py-3 font-semibold hover:bg-[#eaf3f8]">{item.label}</Link>)}<a href={whatsappUrl} target="_blank" rel="noreferrer" className="mt-1 rounded-lg bg-[#087f5b] px-3 py-3 text-center font-bold text-white">Falar pelo WhatsApp</a></nav></details>
+      <div className="hidden items-center gap-2 xl:flex"><nav aria-label="Navegação principal" className="flex items-center gap-1">{navigation.map((item) => <Link key={item.href} href={item.href} className="rounded-lg px-3 py-2 text-sm font-semibold text-[#315f7d] hover:bg-[#eaf3f8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#315f7d]">{item.label}</Link>)}<a href={whatsappUrl} target="_blank" rel="noreferrer" className="ml-2 rounded-full bg-[#087f5b] px-4 py-2 text-sm font-bold text-white hover:bg-[#066b4d]">WhatsApp</a></nav><ThemeToggle compact /></div>
+      <div className="flex items-center gap-2 xl:hidden"><ThemeToggle compact /><details className="relative"><summary className="cursor-pointer list-none rounded-xl border border-[#9db9ca] px-3 py-2 text-sm font-bold text-[#315f7d]">Menu</summary><nav aria-label="Navegação para celular" className="absolute right-0 z-40 mt-3 grid w-64 gap-1 rounded-2xl border border-[#d5e3ec] bg-white p-3 shadow-xl">{navigation.map((item) => <Link key={item.href} href={item.href} className="rounded-lg px-3 py-3 font-semibold hover:bg-[#eaf3f8]">{item.label}</Link>)}<a href={whatsappUrl} target="_blank" rel="noreferrer" className="mt-1 rounded-lg bg-[#087f5b] px-3 py-3 text-center font-bold text-white">Falar pelo WhatsApp</a></nav></details></div>
     </div>
   </header>;
 }

@@ -1,0 +1,7 @@
+import Image from "next/image";
+import Link from "next/link";
+import { ThemeToggle } from "./site-utilities";
+
+export function KosHeader() {
+  return <header className="border-b border-[#cbdce8] bg-white text-[#40566a] shadow-[0_2px_12px_rgba(31,88,114,.04)]"><div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-6"><Link href="/" className="flex min-w-0 items-center gap-3" aria-label="Página inicial do KOS"><Image src="/cms-logo.jpeg" alt="Logotipo do Conselho Municipal de Saúde" width={52} height={52} priority className="h-13 w-13 shrink-0 rounded-xl bg-[#fffbed] object-cover p-0.5" /><span><strong className="block text-sm text-[#17375e] sm:text-base">KOS</strong><span className="block text-xs text-[#60758a] sm:text-sm">Inteligência institucional</span></span><span className="hidden h-12 w-px shrink-0 bg-[#cbdce8] sm:block" aria-hidden="true" /><span className="hidden h-12 w-[180px] overflow-hidden rounded-lg sm:block md:w-[230px]"><Image src="/secretaria-saude-colorida.png" alt="Secretaria Municipal de Saúde de Chapada dos Guimarães" width={230} height={83} priority className="h-full w-full scale-[1.18] object-cover" /></span></Link><div className="flex items-center gap-2"><Link href="/consulta" className="hidden rounded-lg px-3 py-2 text-sm font-bold text-[#315f7d] hover:bg-[#eaf3f8] md:inline-flex">Consultar</Link><a href="https://cms.chapada.ia.br" className="hidden rounded-lg px-3 py-2 text-sm font-bold text-[#315f7d] hover:bg-[#eaf3f8] lg:inline-flex">Portal CMS</a><ThemeToggle /></div></div></header>;
+}
