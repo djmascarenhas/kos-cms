@@ -2,38 +2,24 @@ import Image from "next/image";
 import Link from "next/link";
 
 const cards = [
-  { title: "9ª Conferência Municipal de Saúde", description: "20 propostas aprovadas e análise de rastreabilidade.", href: "/conferencia" },
-  { title: "PMS 2026–2029", description: "Plano Municipal de Saúde.", href: "/conferencia" },
-  { title: "PAS 2026", description: "Programação Anual de Saúde.", href: "/conferencia" },
-  { title: "Reuniões", description: "Pautas, atas e deliberações do Conselho.", href: "/conferencia" },
-  { title: "Documentos", description: "Biblioteca institucional do CMS.", href: "/conferencia" },
-  { title: "KOS", description: "Inteligência técnico-institucional.", href: process.env.NEXT_PUBLIC_KOS_URL ?? "https://kos.chapada.ia.br" },
+  { title: "9ª Conferência", description: "20 propostas aprovadas e rastreabilidade com PMS e PAS.", href: "/conferencia", icon: "01" },
+  { title: "PMS 2026–2029", description: "Planejamento municipal para os próximos quatro anos.", href: "/conferencia", icon: "02" },
+  { title: "PAS 2026", description: "Ações e metas anuais em acompanhamento.", href: "/conferencia", icon: "03" },
 ];
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="bg-emerald-950 text-white">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <Image src="/cms-logo.jpeg" alt="Logotipo do Conselho Municipal de Saúde de Chapada dos Guimarães" width={112} height={112} priority className="rounded-2xl bg-[#fffbed] p-2 shadow-lg" />
-          <p className="mt-7 text-sm font-semibold uppercase tracking-[0.25em] text-emerald-300">Conselho Municipal de Saúde</p>
-          <h1 className="mt-3 text-4xl font-bold md:text-5xl">Chapada dos Guimarães – MT</h1>
-          <p className="mt-4 max-w-2xl text-lg text-emerald-100">Participação social, transparência e acompanhamento das políticas públicas de saúde.</p>
-          <a href={process.env.NEXT_PUBLIC_KOS_URL ?? "https://kos.chapada.ia.br"} className="mt-8 inline-flex rounded-lg bg-amber-400 px-6 py-3 font-semibold text-slate-950 hover:bg-amber-300">Consultar o KOS</a>
-        </div>
-      </header>
-      <section className="mx-auto max-w-7xl px-6 py-12">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {cards.map((card) => (
-            <Link key={card.title} href={card.href} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
-              <h2 className="text-xl font-semibold">{card.title}</h2>
-              <p className="mt-3 text-slate-600">{card.description}</p>
-              <span className="mt-6 inline-block text-sm font-semibold text-emerald-800">Acessar →</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-      <footer className="border-t bg-white"><div className="mx-auto flex max-w-7xl items-center gap-4 px-6 py-6 text-sm text-slate-500"><Image src="/cms-logo.jpeg" alt="Logotipo do Conselho Municipal de Saúde" width={64} height={64} className="rounded-lg" /><p>Conselho Municipal de Saúde de Chapada dos Guimarães – MT</p></div></footer>
+    <main className="min-h-screen bg-[#f7faf8] text-[#10231d]">
+      <header className="border-b border-emerald-950/10 bg-white"><div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4"><div className="flex items-center gap-3"><Image src="/cms-logo.jpeg" alt="Logotipo do Conselho Municipal de Saúde" width={52} height={52} className="rounded-xl" /><div><p className="text-xs font-bold uppercase tracking-[.16em] text-emerald-800">Conselho Municipal de Saúde</p><p className="text-sm text-slate-600">Chapada dos Guimarães – MT</p></div></div><a href="tel:+5565992326757" className="hidden rounded-full border border-emerald-800 px-4 py-2 text-sm font-semibold text-emerald-900 hover:bg-emerald-50 sm:inline-flex">Contato</a></div></header>
+
+      <section className="health-grid overflow-hidden bg-emerald-950 text-white"><div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 lg:grid-cols-[1.25fr_.75fr] lg:items-center lg:py-24"><div><p className="inline-flex rounded-full bg-emerald-900 px-4 py-2 text-xs font-bold uppercase tracking-[.18em] text-emerald-200">Portal institucional</p><h1 className="mt-6 max-w-3xl text-4xl font-bold leading-tight md:text-6xl">Saúde pública com escuta, transparência e participação.</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-emerald-100">Acompanhe prioridades, documentos e decisões do Conselho Municipal de Saúde de Chapada dos Guimarães.</p><div className="mt-9 flex flex-wrap gap-3"><Link href="/conferencia" className="rounded-xl bg-amber-400 px-6 py-3 font-bold text-emerald-950 transition hover:bg-amber-300">Ver a 9ª Conferência</Link><a href={process.env.NEXT_PUBLIC_KOS_URL ?? "https://kos.chapada.ia.br"} className="rounded-xl border border-emerald-500 px-6 py-3 font-bold text-white transition hover:bg-emerald-900">Consultar o KOS</a></div></div><div className="rounded-3xl bg-white p-7 text-slate-900 shadow-2xl"><p className="text-sm font-bold uppercase tracking-[.16em] text-emerald-800">Em destaque</p><p className="mt-4 text-4xl font-bold text-emerald-950">20</p><p className="mt-1 text-lg font-semibold">propostas da 9ª Conferência</p><p className="mt-4 leading-7 text-slate-600">Compare cada proposta aprovada com o Plano Municipal de Saúde e a Programação Anual de Saúde.</p><Link href="/conferencia" className="mt-6 inline-flex font-bold text-emerald-800 hover:text-emerald-600">Acessar análise →</Link></div></div></section>
+
+      <section className="mx-auto max-w-7xl px-6 py-16"><div className="max-w-2xl"><p className="text-sm font-bold uppercase tracking-[.16em] text-emerald-800">Acesso rápido</p><h2 className="mt-3 text-3xl font-bold tracking-tight">Informação organizada para o controle social.</h2></div><div className="mt-9 grid gap-5 md:grid-cols-3">{cards.map((card) => <Link key={card.title} href={card.href} className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg"><span className="text-sm font-bold text-amber-700">{card.icon}</span><h3 className="mt-8 text-xl font-bold">{card.title}</h3><p className="mt-3 leading-7 text-slate-600">{card.description}</p><span className="mt-6 inline-flex font-bold text-emerald-800 group-hover:text-emerald-600">Acessar →</span></Link>)}</div></section>
+
+      <section className="bg-emerald-50"><div className="mx-auto grid max-w-7xl gap-8 px-6 py-14 md:grid-cols-3"><div><p className="text-3xl font-bold text-emerald-950">20</p><p className="mt-1 text-slate-700">propostas documentadas</p></div><div><p className="text-3xl font-bold text-emerald-950">40</p><p className="mt-1 text-slate-700">análises de rastreabilidade</p></div><div><p className="text-3xl font-bold text-emerald-950">1</p><p className="mt-1 text-slate-700">portal público de acompanhamento</p></div></div></section>
+      <Footer />
     </main>
   );
 }
+
+function Footer() { return <footer className="bg-emerald-950 text-emerald-50"><div className="mx-auto grid max-w-7xl gap-10 px-6 py-12 md:grid-cols-[1.3fr_1fr_1fr]"><div className="flex gap-4"><Image src="/cms-logo.jpeg" alt="Logotipo do Conselho Municipal de Saúde" width={72} height={72} className="h-18 rounded-xl bg-[#fffbed] p-1" /><div><p className="font-bold">Conselho Municipal de Saúde</p><p className="mt-2 text-sm leading-6 text-emerald-200">Chapada dos Guimarães – MT<br />Participação social e defesa do SUS.</p></div></div><div><p className="font-bold">Acesso rápido</p><div className="mt-3 grid gap-2 text-sm text-emerald-200"><Link href="/conferencia" className="hover:text-white">9ª Conferência</Link><Link href="/conferencia" className="hover:text-white">PMS 2026–2029</Link><Link href="/conferencia" className="hover:text-white">PAS 2026</Link></div></div><div><p className="font-bold">Contato institucional</p><div className="mt-3 grid gap-2 text-sm text-emerald-200"><a className="hover:text-white" href="tel:+5565992326757">(65) 99232-6757</a><a className="hover:text-white" href="mailto:secsaude@chapadadosguimaraes.mt.gov.br">secsaude@chapadadosguimaraes.mt.gov.br</a><p>Rua E, s/nº – Santa Cruz</p></div></div></div><div className="border-t border-emerald-800 px-6 py-4 text-center text-xs text-emerald-300">© {new Date().getFullYear()} Conselho Municipal de Saúde de Chapada dos Guimarães.</div></footer>; }
