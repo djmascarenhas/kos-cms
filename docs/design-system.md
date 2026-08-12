@@ -16,7 +16,8 @@ Use em funcionalidades do KOS. Centro da página com pergunta principal, atalhos
 
 ## Regras comuns
 
-- Fundo claro ou azul profundo, contraste alto e tipografia simples.
+- Páginas de análise usam fundo azul muito claro (`#f2f7fb`), títulos em azul-marinho (`#17375e`), subtítulos em azul-petróleo (`#1f5872`) e texto em azul-acinzentado (`#40566a`).
+- Destaques e textos em negrito usam azul institucional moderado (`#234c68`), sem cores saturadas no conteúdo.
 - Título e ação principal visíveis sem rolagem em celular.
 - Botões com rótulos objetivos; nunca depender apenas de cor ou ícone.
 - Espaço generoso entre seções e largura de leitura limitada.
