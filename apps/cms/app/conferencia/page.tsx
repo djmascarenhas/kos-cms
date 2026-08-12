@@ -32,7 +32,7 @@ const badgeStyle: Record<Status, string> = {
   "Não localizada": "border border-slate-200 bg-slate-100 text-slate-700",
 };
 
-function Badge({ status }: { status: Status }) { return <span className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${badgeStyle[status]}`}>{status}</span>; }
+function Badge({ status }: { status: Status }) { return <span className={`inline-flex rounded-full px-3 py-1 text-xs font-bold ${badgeStyle[status]}`}>{status}</span>; }
 
 const axisOrdinals: Record<string, number> = { "Eixo I": 1, "Eixo II": 2, "Eixo III": 3, "Eixo IV": 4 };
 

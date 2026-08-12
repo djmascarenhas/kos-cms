@@ -57,3 +57,30 @@ html[data-theme="dark"] [class*="border-slate-200"],
 html[data-theme="dark"] [class*="border-slate-300"] { border-color: #36536a !important; }
 html[data-theme="dark"] input, html[data-theme="dark"] textarea, html[data-theme="dark"] select { background: #0b1624 !important; color: #eaf3f8 !important; border-color: #52738b !important; }
 html[data-theme="dark"] .theme-toggle { background: #17375e !important; color: #fff !important; }
+
+/* Contraste reforçado para leitura no tema escuro. */
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] th,
+html[data-theme="dark"] strong,
+html[data-theme="dark"] label { color: #f4f9fc !important; font-weight: 700; }
+html[data-theme="dark"] p,
+html[data-theme="dark"] td,
+html[data-theme="dark"] dd { color: #d5e3ec; }
+html[data-theme="dark"] a:not([class*="text-white"]):not([class*="text-emerald"]):not([class*="text-sky"]):not([class*="text-teal"]) { color: #8bd3ee !important; font-weight: 700; }
+html[data-theme="dark"] [class*="text-[#28738c]"],
+html[data-theme="dark"] [class*="text-[#36566c]"] { color: #b9dced !important; font-weight: 700; }
+html[data-theme="dark"] thead { background-color: #193047 !important; }
+html[data-theme="dark"] thead th { color: #eaf6fb !important; font-weight: 700; }
+html[data-theme="dark"] [class*="bg-slate-100"] { background-color: #e2e8f0 !important; color: #334155 !important; font-weight: 700; }
+html[data-theme="dark"] [class*="bg-slate-100"] * { color: #334155 !important; }
+html[data-theme="dark"] [class*="bg-sky-50"] { background-color: #e0f2fe !important; color: #075985 !important; font-weight: 700; }
+html[data-theme="dark"] [class*="bg-sky-50"] * { color: #075985 !important; }
+html[data-theme="dark"] [class*="bg-teal-50"] { background-color: #ccfbf1 !important; color: #115e59 !important; font-weight: 700; }
+html[data-theme="dark"] [class*="bg-teal-50"] * { color: #115e59 !important; }
+html[data-theme="dark"] [class*="bg-red-50"] { background-color: #fee2e2 !important; color: #991b1b !important; font-weight: 700; }
+html[data-theme="dark"] [class*="bg-red-50"] * { color: #991b1b !important; }
+html[data-theme="dark"] [class*="bg-[#dcecf5]"] { background-color: #dcecf5 !important; color: #17375e !important; font-weight: 700; }
+html[data-theme="dark"] [class*="bg-[#dcecf5]"] * { color: #17375e !important; }

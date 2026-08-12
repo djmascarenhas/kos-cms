@@ -21,3 +21,20 @@ html[data-theme="dark"] [class*="text-[#17375e]"], html[data-theme="dark"] [clas
 html[data-theme="dark"] [class*="border-[#cbdce8]"], html[data-theme="dark"] [class*="border-[#d5e3ec]"], html[data-theme="dark"] [class*="border-[#dbe7ef]"] { border-color: #36536a !important; }
 html[data-theme="dark"] input { background: #0b1624 !important; color: #eaf3f8 !important; border-color: #52738b !important; }
 html[data-theme="dark"] .theme-toggle { background: #17375e !important; color: #fff !important; }
+
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] th,
+html[data-theme="dark"] strong,
+html[data-theme="dark"] label { color: #f4f9fc !important; font-weight: 700; }
+html[data-theme="dark"] p, html[data-theme="dark"] td { color: #d5e3ec; }
+html[data-theme="dark"] a:not([class*="text-white"]):not([class*="text-amber"]) { color: #8bd3ee !important; font-weight: 700; }
+html[data-theme="dark"] [class*="text-[#28738c]"], html[data-theme="dark"] [class*="text-[#36566c]"] { color: #b9dced !important; font-weight: 700; }
+html[data-theme="dark"] thead { background-color: #193047 !important; }
+html[data-theme="dark"] thead th { color: #eaf6fb !important; font-weight: 700; }
+html[data-theme="dark"] [class*="bg-slate-100"] { background-color: #e2e8f0 !important; color: #334155 !important; font-weight: 700; }
+html[data-theme="dark"] [class*="bg-sky-50"] { background-color: #e0f2fe !important; color: #075985 !important; font-weight: 700; }
+html[data-theme="dark"] [class*="bg-teal-50"] { background-color: #ccfbf1 !important; color: #115e59 !important; font-weight: 700; }
+html[data-theme="dark"] [class*="bg-red-50"] { background-color: #fee2e2 !important; color: #991b1b !important; font-weight: 700; }
+html[data-theme="dark"] [class*="bg-slate-100"] *, html[data-theme="dark"] [class*="bg-sky-50"] *, html[data-theme="dark"] [class*="bg-teal-50"] *, html[data-theme="dark"] [class*="bg-red-50"] * { color: inherit !important; }
