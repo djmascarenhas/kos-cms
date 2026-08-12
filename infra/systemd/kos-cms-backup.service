@@ -1,0 +1,12 @@
+[Unit]
+Description=Create and verify KOS CMS database and document backup
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+UMask=0077
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+ExecStart=/usr/bin/flock -n /run/kos-cms-backup.lock /bin/sh /opt/kos-cms/app/infra/scripts/backup-kos-cms.sh
