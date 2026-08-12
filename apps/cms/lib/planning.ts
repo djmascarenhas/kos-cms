@@ -12,6 +12,7 @@ export type PlanningAnalysis = {
   status: TraceabilityStatus;
   rationale: string;
   sourceReference: string | null;
+  documentId: string | null;
 };
 
 let pool: Pool | undefined;
@@ -28,11 +29,14 @@ export async function getPlanningAnalysis(kind: PlanningKind): Promise<PlanningA
     `SELECT axis.ordinal::int AS "axisOrdinal", axis.title AS "axisTitle",
       proposal.ordinal::int AS "proposalOrdinal", proposal.title AS "proposalTitle",
       proposal.proposal_text AS "proposalText", link.status::text AS status,
-      link.rationale, link.source_reference AS "sourceReference"
+      link.rationale, link.source_reference AS "sourceReference",
+      COALESCE(plan.document_id, program.document_id)::text AS "documentId"
      FROM conference_proposals proposal
      JOIN conference_axes axis ON axis.id = proposal.axis_id
      JOIN conferences conference ON conference.id = proposal.conference_id
      JOIN traceability_links link ON link.conference_proposal_id = proposal.id
+     LEFT JOIN health_plans plan ON plan.id = link.health_plan_id
+     LEFT JOIN annual_programs program ON program.id = link.annual_program_id
      WHERE conference.edition = 9 AND ${scope}
      ORDER BY axis.ordinal, proposal.ordinal`,
   );

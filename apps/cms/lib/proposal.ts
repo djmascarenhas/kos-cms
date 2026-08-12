@@ -19,9 +19,11 @@ export type ProposalDetail = {
   pmsStatus: string | null;
   pmsRationale: string | null;
   pmsReference: string | null;
+  pmsDocumentId: string | null;
   pasStatus: string | null;
   pasRationale: string | null;
   pasReference: string | null;
+  pasDocumentId: string | null;
 };
 
 export type ProposalSummary = Pick<ProposalDetail, "axisOrdinal" | "proposalOrdinal" | "title" | "monitoringStatus" | "responsibleName" | "progressPercent" | "updatedAt">;
@@ -62,14 +64,18 @@ export async function getProposalBySlug(slug: string): Promise<ProposalDetail | 
       MAX(link.status::text) FILTER (WHERE link.health_plan_id IS NOT NULL) AS "pmsStatus",
       MAX(link.rationale) FILTER (WHERE link.health_plan_id IS NOT NULL) AS "pmsRationale",
       MAX(link.source_reference) FILTER (WHERE link.health_plan_id IS NOT NULL) AS "pmsReference",
+      MAX(plan.document_id::text) FILTER (WHERE link.health_plan_id IS NOT NULL) AS "pmsDocumentId",
       MAX(link.status::text) FILTER (WHERE link.annual_program_id IS NOT NULL) AS "pasStatus",
       MAX(link.rationale) FILTER (WHERE link.annual_program_id IS NOT NULL) AS "pasRationale",
-      MAX(link.source_reference) FILTER (WHERE link.annual_program_id IS NOT NULL) AS "pasReference"
+      MAX(link.source_reference) FILTER (WHERE link.annual_program_id IS NOT NULL) AS "pasReference",
+      MAX(program.document_id::text) FILTER (WHERE link.annual_program_id IS NOT NULL) AS "pasDocumentId"
      FROM conference_proposals proposal
      JOIN conference_axes axis ON axis.id = proposal.axis_id
      JOIN conferences conference ON conference.id = proposal.conference_id
      LEFT JOIN proposal_monitoring monitoring ON monitoring.proposal_id = proposal.id
      LEFT JOIN traceability_links link ON link.conference_proposal_id = proposal.id
+     LEFT JOIN health_plans plan ON plan.id = link.health_plan_id
+     LEFT JOIN annual_programs program ON program.id = link.annual_program_id
      WHERE conference.edition = 9 AND axis.ordinal = $1 AND proposal.ordinal = $2
      GROUP BY axis.ordinal, axis.title, proposal.id, monitoring.proposal_id
      LIMIT 1`,

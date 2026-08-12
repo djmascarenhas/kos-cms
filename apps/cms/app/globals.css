@@ -25,3 +25,35 @@ body { margin: 0; background: var(--background); color: var(--foreground); font-
 }
 
 .input:focus { border-color: #315f7d; box-shadow: 0 0 0 2px #dcecf5; }
+
+html[data-theme="dark"] body { --background: #07111f; --foreground: #dbe7ef; background: #07111f; color: #dbe7ef; }
+html[data-theme="dark"] main[class*="bg-[#f2f7fb]"],
+html[data-theme="dark"] main[class*="bg-[#f7faf8]"],
+html[data-theme="dark"] [class*="from-[#e9f3f9]"] { background: #07111f !important; color: #dbe7ef !important; }
+html[data-theme="dark"] [class*="bg-white"],
+html[data-theme="dark"] [class*="bg-[#f4f8fb]"],
+html[data-theme="dark"] [class*="bg-[#e8f2f8]"],
+html[data-theme="dark"] [class*="bg-[#eaf3f8]"],
+html[data-theme="dark"] [class*="bg-emerald-50"],
+html[data-theme="dark"] [class*="bg-slate-50"] { background-color: #111e2d !important; }
+html[data-theme="dark"] [class*="text-[#17375e]"],
+html[data-theme="dark"] [class*="text-[#1f5872]"],
+html[data-theme="dark"] [class*="text-[#234c68]"],
+html[data-theme="dark"] [class*="text-[#29465b]"],
+html[data-theme="dark"] [class*="text-[#315f7d]"],
+html[data-theme="dark"] [class*="text-[#40566a]"],
+html[data-theme="dark"] [class*="text-[#405f73]"],
+html[data-theme="dark"] [class*="text-[#50697c]"],
+html[data-theme="dark"] [class*="text-[#60758a]"],
+html[data-theme="dark"] [class*="text-[#60798c]"],
+html[data-theme="dark"] [class*="text-slate-600"],
+html[data-theme="dark"] [class*="text-slate-700"],
+html[data-theme="dark"] [class*="text-slate-900"],
+html[data-theme="dark"] [class*="text-emerald-950"] { color: #dbe7ef !important; }
+html[data-theme="dark"] [class*="border-[#cbdce8]"],
+html[data-theme="dark"] [class*="border-[#d5e3ec]"],
+html[data-theme="dark"] [class*="border-[#dbe7ef]"],
+html[data-theme="dark"] [class*="border-slate-200"],
+html[data-theme="dark"] [class*="border-slate-300"] { border-color: #36536a !important; }
+html[data-theme="dark"] input, html[data-theme="dark"] textarea, html[data-theme="dark"] select { background: #0b1624 !important; color: #eaf3f8 !important; border-color: #52738b !important; }
+html[data-theme="dark"] .theme-toggle { background: #17375e !important; color: #fff !important; }
