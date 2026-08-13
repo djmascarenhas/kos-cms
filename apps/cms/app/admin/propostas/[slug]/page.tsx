@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireAdmin } from "../../actions";
+import { requireAdmin } from "../../../../lib/session";
 import { getProposalBySlug } from "../../../../lib/proposal";
 
 export const dynamic = "force-dynamic";
 
 export default async function EditProposalPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ saved?: string; error?: string }> }) {
-  await requireAdmin();
+  await requireAdmin("gestao");
   const { slug } = await params;
   const proposal = await getProposalBySlug(slug);
   if (!proposal) notFound();

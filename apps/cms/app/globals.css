@@ -84,3 +84,8 @@ html[data-theme="dark"] [class*="bg-red-50"] { background-color: #fee2e2 !import
 html[data-theme="dark"] [class*="bg-red-50"] * { color: #991b1b !important; }
 html[data-theme="dark"] [class*="bg-[#dcecf5]"] { background-color: #dcecf5 !important; color: #17375e !important; font-weight: 700; }
 html[data-theme="dark"] [class*="bg-[#dcecf5]"] * { color: #17375e !important; }
+
+@media print {
+  @page { margin: 16mm; }
+  body { background: white !important; color: #111827 !important; }
+}

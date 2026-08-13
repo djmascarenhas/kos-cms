@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { getAdminSession } from "../../../../admin/actions";
+import { getAdminSession } from "../../../../../lib/session";
 import { updateProposalMonitoring, type ProposalDetail } from "../../../../../lib/proposal";
+import { hasRole } from "../../../../../lib/users";
 
 const allowedStatuses: ProposalDetail["monitoringStatus"][] = ["awaiting_information", "under_analysis", "in_progress", "completed", "suspended"];
 
@@ -8,6 +9,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ slu
   const session = await getAdminSession();
   const origin = process.env.CMS_URL ?? "https://cms.chapada.ia.br";
   if (!session) return NextResponse.redirect(new URL("/admin/login", origin), 303);
+  if (!hasRole(session, "gestao")) return NextResponse.redirect(new URL("/admin?acesso=negado", origin), 303);
   const { slug } = await params;
   const formData = await request.formData();
   const status = String(formData.get("status") ?? "") as ProposalDetail["monitoringStatus"];

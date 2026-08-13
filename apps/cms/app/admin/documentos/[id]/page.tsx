@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireAdmin } from "../../actions";
+import { requireAdmin } from "../../../../lib/session";
 import { getAdminDocument, listDocumentTypes } from "../../../../lib/documents";
+import { canPublish } from "../../../../lib/users";
 
 export const dynamic = "force-dynamic";
 
@@ -16,14 +17,15 @@ export default async function DocumentReviewPage({
   params: Promise<{ id: string }>;
   searchParams: Promise<{ saved?: string; error?: string }>;
 }) {
-  await requireAdmin();
+  const session = await requireAdmin("gestao");
+  const mayPublish = canPublish(session);
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
   const [document, types, state] = await Promise.all([getAdminDocument(id), listDocumentTypes(), searchParams]);
   if (!document) notFound();
 
   return <main className="min-h-screen bg-[#f2f7fb] text-[#40566a]">
-    <header className="border-b border-[#cbdce8] bg-white"><div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4"><Link href="/admin/documentos" className="font-bold text-[#17375e]">← Documentos</Link><Link href="/documentos" className="text-sm font-semibold text-[#315f7d]">Ver biblioteca pública</Link></div></header>
+    <header className="border-b border-[#cbdce8] bg-white"><div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4"><Link href="/admin/documentos" className="font-bold text-[#17375e]">← Documentos</Link><Link href={`/admin/documentos/${document.id}/historico`} className="text-sm font-semibold text-[#315f7d]">Ver histórico completo</Link></div></header>
     <section className="mx-auto max-w-5xl px-6 py-12">
       <p className="text-sm font-bold uppercase tracking-[.16em] text-[#28738c]">Revisão documental</p>
       <h1 className="mt-3 text-4xl font-bold text-[#17375e]">Editar documento</h1>
@@ -38,8 +40,7 @@ export default async function DocumentReviewPage({
           <Field label="Ano de referência"><input name="referenceYear" type="number" min="1900" max="2200" className="input" defaultValue={document.referenceYear ?? ""} /></Field>
           <Field label="Órgão emissor"><input name="issuingBody" maxLength={300} className="input" defaultValue={document.issuingBody ?? ""} /></Field>
           <Field label="Data do documento"><input name="documentDate" type="date" className="input" defaultValue={document.documentDate ?? ""} /></Field>
-          <Field label="Situação"><select name="status" className="input" defaultValue={document.status}><option value="published">Publicado</option><option value="draft">Rascunho</option><option value="archived">Arquivado</option></select></Field>
-          <Field label="Visibilidade"><select name="visibility" className="input" defaultValue={document.visibility}><option value="public">Público</option><option value="restricted">Restrito</option><option value="internal">Interno</option></select></Field>
+          {mayPublish ? <><Field label="Situação"><select name="status" className="input" defaultValue={document.status}><option value="published">Publicado</option><option value="draft">Rascunho</option><option value="archived">Arquivado</option></select></Field><Field label="Visibilidade"><select name="visibility" className="input" defaultValue={document.visibility}><option value="public">Público</option><option value="restricted">Restrito</option><option value="internal">Interno</option></select></Field></> : <><Field label="Situação"><input className="input" value="Rascunho — publicação reservada à Diretoria" readOnly /><input type="hidden" name="status" value="draft" /></Field><Field label="Visibilidade"><select name="visibility" className="input" defaultValue={document.visibility === "restricted" ? "restricted" : "internal"}><option value="internal">Interno</option><option value="restricted">Restrito</option></select></Field></>}
         </div>
         <Field label="Descrição"><textarea name="description" maxLength={3000} rows={5} className="input" defaultValue={document.description ?? ""} /></Field>
         <Field label="Substituir PDF (opcional, máximo 20 MB)"><input name="file" type="file" accept="application/pdf,.pdf" className="rounded-xl border border-dashed border-[#9db9ca] bg-[#f4f8fb] p-4" /><span className="text-sm font-normal text-[#60798c]">Deixe vazio para manter o arquivo atual.</span></Field>

@@ -10,6 +10,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) return new NextResponse("Documento não encontrado", { status: 404 });
   const document = await getDownloadableDocument(id);
+  if (document?.sourceType === "google_drive" && document.sourceUrl) return NextResponse.redirect(document.sourceUrl, 302);
   if (!document?.storagePath) return new NextResponse("Arquivo não disponível", { status: 404 });
   const resolvedPath = path.resolve(document.storagePath);
   if (!resolvedPath.startsWith(`${storageDirectory}${path.sep}`)) return new NextResponse("Arquivo não disponível", { status: 404 });
