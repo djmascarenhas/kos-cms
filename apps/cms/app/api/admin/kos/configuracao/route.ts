@@ -11,7 +11,7 @@ function integer(form: FormData, name: string) {
 
 export async function POST(request: Request) {
   const session = await requireAdmin("master");
-  const origin = new URL(request.url).origin;
+  const origin = process.env.CMS_URL ?? "https://cms.chapada.ia.br";
   const form = await request.formData();
   const quotas: KosQuota[] = userRoles.map((role) => ({
     role,

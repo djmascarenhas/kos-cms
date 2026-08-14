@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
   const result = await authenticateUser(email, password);
-  const origin = new URL(request.url).origin;
+  const origin = process.env.CMS_URL ?? "https://cms.chapada.ia.br";
   if (result.kind !== "ok") {
     const reason = result.kind === "pending" ? "pendente" : result.kind === "suspended" ? "suspenso" : "credenciais";
     return NextResponse.redirect(new URL(`/admin/login?erro=${reason}`, origin), 303);
