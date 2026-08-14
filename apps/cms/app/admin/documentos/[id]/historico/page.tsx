@@ -1,0 +1,24 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { requireAdmin } from "../../../../../lib/session";
+import { getAdminDocument, getDocumentHistory } from "../../../../../lib/documents";
+import { roleLabel, type UserRole } from "../../../../../lib/users";
+
+export const dynamic = "force-dynamic";
+
+const actionLabel: Record<string, string> = { document_created: "Documento criado e protocolado", document_updated: "Dados ou arquivo revisados" };
+const changeLabel: Record<string, string> = { upload_inicial: "Upload inicial", substituicao: "Arquivo substituído", gerado: "Documento gerado", importado: "Versão incorporada do acervo anterior" };
+
+function bytes(value: number | null) { if (value === null) return "Não registrado"; if (value < 1024 * 1024) return `${Math.max(1, Math.round(value / 1024))} KB`; return `${(value / 1024 / 1024).toFixed(2)} MB`; }
+function date(value: string) { return new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "medium", timeZone: "America/Cuiaba" }).format(new Date(value)); }
+
+export default async function DocumentHistoryPage({ params }: { params: Promise<{ id: string }> }) {
+  await requireAdmin(); const { id } = await params; if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
+  const [document, history] = await Promise.all([getAdminDocument(id), getDocumentHistory(id)]); if (!document) notFound();
+  return <main className="min-h-screen bg-[#f2f7fb] text-[#40566a]"><header className="border-b border-[#cbdce8] bg-white"><div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4"><Link href="/admin/documentos" className="font-bold text-[#17375e]">← Gestão documental</Link><span className="text-sm font-semibold">Registro protegido</span></div></header><section className="mx-auto max-w-6xl px-6 py-12">
+    <p className="text-sm font-bold uppercase tracking-[.16em] text-[#28738c]">Rastreabilidade documental</p><h1 className="mt-3 text-4xl font-bold text-[#17375e]">{document.title}</h1><p className="mt-4 leading-7">Histórico completo de criação, uploads, versões, responsáveis e alterações registradas no portal.</p>
+    <dl className="mt-7 grid gap-4 rounded-2xl border border-[#d5e3ec] bg-white p-6 sm:grid-cols-2 lg:grid-cols-4"><div><dt className="text-xs font-bold uppercase">Criado/protocolado por</dt><dd className="mt-1 font-bold">{document.createdByName ?? "Não identificado no acervo anterior"}</dd><dd className="text-xs">{document.createdByEmail ?? "—"}</dd></div><div><dt className="text-xs font-bold uppercase">Data de entrada</dt><dd className="mt-1 font-bold">{date(document.createdAt)}</dd></div><div><dt className="text-xs font-bold uppercase">Arquivo atual</dt><dd className="mt-1 break-words font-bold">{document.originalFilename ?? "Nome original não registrado"}</dd></div><div><dt className="text-xs font-bold uppercase">Integridade</dt><dd className="mt-1 font-bold">{history.versions[0]?.sha256 ? `${history.versions[0].sha256.slice(0, 16)}…` : "Não registrada"}</dd></div></dl>
+    <h2 className="mt-10 text-2xl font-bold text-[#17375e]">Versões do arquivo</h2><div className="mt-5 grid gap-4">{history.versions.length ? history.versions.map((version) => <article key={version.id} className="rounded-2xl border border-[#d5e3ec] bg-white p-6"><div className="flex flex-wrap justify-between gap-3"><div><h3 className="font-bold text-[#17375e]">Versão {version.versionNumber} · {changeLabel[version.changeType] ?? version.changeType}</h3><p className="mt-2 text-sm">{version.originalFilename ?? "Nome original não registrado"} · {bytes(version.fileSizeBytes)}</p><p className="mt-1 text-sm">Responsável: <strong>{version.createdByName ?? version.createdByEmail ?? "Não identificado"}</strong></p></div><time className="text-sm font-bold">{date(version.createdAt)}</time></div><p className="mt-4 break-all rounded-xl bg-[#f2f7fb] p-3 font-mono text-xs">SHA-256: {version.sha256}</p></article>) : <p className="rounded-2xl border border-[#d5e3ec] bg-white p-6">O arquivo é anterior à implantação e ainda não possui versão recuperável cadastrada.</p>}</div>
+    <h2 className="mt-10 text-2xl font-bold text-[#17375e]">Eventos registrados</h2><div className="mt-5 grid gap-4">{history.events.map((event) => <article key={event.id} className="rounded-2xl border border-[#d5e3ec] bg-white p-6"><div className="flex flex-wrap justify-between gap-3"><div><h3 className="font-bold text-[#17375e]">{actionLabel[event.action] ?? event.action}</h3><p className="mt-2 text-sm">Realizado por <strong>{event.actorName ?? event.actorEmail ?? "Registro anterior sem identificação"}</strong>{event.actorRole ? ` · ${roleLabel(event.actorRole as UserRole)}` : ""}</p></div><time className="text-sm font-bold">{date(event.createdAt)}</time></div>{event.sourceIp ? <p className="mt-3 text-xs">Origem de rede registrada: {event.sourceIp}</p> : null}</article>)}</div>
+  </section></main>;
+}
