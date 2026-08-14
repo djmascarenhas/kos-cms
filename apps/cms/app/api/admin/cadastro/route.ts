@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   const councilSegment = String(form.get("councilSegment") ?? "").trim();
   const password = String(form.get("password") ?? "");
   const confirmation = String(form.get("passwordConfirmation") ?? "");
-  const origin = new URL(request.url).origin;
+  const origin = process.env.CMS_URL ?? "https://cms.chapada.ia.br";
   const valid = fullName.length >= 3 && fullName.length <= 160 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254 && councilPosition.length >= 2 && councilPosition.length <= 160 && councilSegment.length <= 160 && validPassword(password) && password === confirmation;
   if (!valid) return NextResponse.redirect(new URL("/admin/cadastro?erro=validacao", origin), 303);
   try {

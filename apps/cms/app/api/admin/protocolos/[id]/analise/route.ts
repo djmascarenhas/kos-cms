@@ -6,7 +6,7 @@ import { requireAdmin } from "../../../../../../lib/session";
 export async function POST(request: Request, context: RouteContext<"/api/admin/protocolos/[id]/analise">) {
   const session = await requireAdmin();
   const { id } = await context.params;
-  const origin = new URL(request.url).origin;
+  const origin = process.env.CMS_URL ?? "https://cms.chapada.ia.br";
   if (!/^[0-9a-f-]{36}$/i.test(id)) return NextResponse.redirect(new URL("/admin/protocolos?error=validation", origin), 303);
   const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
   try {
